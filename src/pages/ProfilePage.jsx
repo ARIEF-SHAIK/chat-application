@@ -38,14 +38,14 @@ const ProfilePage = () => {
     }
   };
 
-  // ✅ Show loader or message while authUser is still null
-  if (authUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-gray-300">
-        Loading profile...
-      </div>
-    );
-  }
+  // // ✅ Show loader or message while authUser is still null
+  // if (authUser) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-black text-gray-300">
+  //       Loading profile...
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">

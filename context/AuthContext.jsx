@@ -6,6 +6,7 @@ import API from "../services/api";
 
 export const AuthContext = createContext();
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -86,7 +87,7 @@ export const AuthProvider = ({ children }) => {
   const connectSocket = (user) => {
     if (!user || socket?.connected) return;
 
-    const newSocket = io(API, {
+    const newSocket = io(backendUrl, {
       query: { userId: user._id },
     });
 

@@ -6,6 +6,26 @@ import ProfilePage from './pages/ProfilePage'
 import { Toaster } from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
 
+// Defining a Protected Route logic component
+const ProtectedRoute = ({ element: Element }) => {
+  const { authUser, token } = useContext(AuthContext);
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Show a loading screen if we have a token but haven't fetched authUser yet
+  if (!authUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-gray-300">
+        Loading...
+      </div>
+    );
+  }
+
+  return Element;
+};
+
 
 const App = () => {
   const {authUser} = useContext(AuthContext);
@@ -14,11 +34,13 @@ const App = () => {
     <div className="bg-[url('./src/assets/bgImage.svg')] bg-contain">
       <Toaster/>
       <Routes>
-        <Route path='/' element={<HomePage/>} />
+        {/* FIX: Use ProtectedRoute for Home and Profile pages */}
+        <Route path='/' element={<ProtectedRoute element={<HomePage />} />} />
 
-        <Route path='/login' element={ <LoginPage/> } />
+        {/* FIX: Redirect to home if already logged in */}
+        <Route path='/login' element={ authUser ? <Navigate to="/" replace /> : <LoginPage/> } />
 
-        <Route path='/profile' element={ <ProfilePage/> }/>
+        <Route path='/profile' element={<ProtectedRoute element={<ProfilePage />} />} />
       </Routes>
     </div>
   ) 
