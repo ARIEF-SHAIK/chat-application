@@ -6,7 +6,7 @@ import API from "../services/api";
 
 export const AuthContext = createContext();
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = 'http://localhost:5000';
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
@@ -35,8 +35,6 @@ export const AuthProvider = ({ children }) => {
       if (data.success) {
         setAuthUser(data.user);       // ✅ FIXED
         connectSocket(data.user);     // ✅ FIXED
-
-        API.defaults.headers.common["token"] = data.token;
         setToken(data.token);
         localStorage.setItem("token", data.token);
 
@@ -60,7 +58,6 @@ export const AuthProvider = ({ children }) => {
     setAuthUser(null);
     setOnlineUser([]);
 
-    delete API.defaults.headers.common["token"];
 
     if (socket) {
       socket.disconnect();
@@ -101,7 +98,6 @@ export const AuthProvider = ({ children }) => {
   // ✅ RUN ON LOAD
   useEffect(() => {
     if (token) {
-      API.defaults.headers.common["token"] = token;
       checkAuth();
     }
   }, [token]);
